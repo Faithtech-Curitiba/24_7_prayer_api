@@ -1,0 +1,42 @@
+[tool.poetry]
+name = "prayer"
+version = "0.1.0"
+description = "24/7 Prayer API"
+authors = ["Patrick Rodrigues <patrick.rodrigues@snowmanlabs.com>"]
+
+[tool.poetry.dependencies]
+python = "~3.9.4"
+django = "*"
+psycopg2 = "*"
+gunicorn = "*"
+markdown = "*"
+django-filter = "*"
+
+django-ninja = "*"
+
+django-split-settings = "*"
+dj-database-url = "*"
+python-decouple = "*"
+python-dotenv = "*"
+sentry-sdk = "*"
+django-crontab = "^0.7.1"
+django-health-check = "^3.16.4"
+django-cors-headers = "^3.7.0"
+
+[tool.poetry.dev-dependencies]
+black = "*"
+django-extensions = "*"
+flake8 = "*"
+isort = "*"
+mixer = "*"
+mypy = "*"
+pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-django = "*"
+pytest-env = "*"
+pytest-mock = "*"
+
+[build-system]
+requires = ["poetry>=1.1.6"]
+build-backend = "poetry.masonry.api"

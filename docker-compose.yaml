@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  
+  db:
+    image: postgres:12.0-alpine
+    env_file:
+      .env
+    ports:
+      - "5432:5432"
+
+  web: 
+    build:
+      context: .
+      target: backend
+      args:
+        DJANGO_ENV: "${DJANGO_ENV}"
+    command: --development --cron    
+    env_file: 
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on: 
+      - db

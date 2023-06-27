@@ -1,0 +1,59 @@
+version: "3.8"
+
+volumes:
+    db_data: {}
+
+services:
+
+
+  nginx:
+    image: 758024524140.dkr.ecr.us-east-1.amazonaws.com/prayer247-nginx:latest
+    ports:
+      - 8087:80
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        parallelism: 2
+        failure_action: rollback
+        order: start-first
+        max_failure_ratio: 1
+      rollback_config:
+        parallelism: 0
+        failure_action: continue
+        order: start-first
+  
+  db:
+    image: postgres:12.0-alpine
+    env_file:
+      - .env
+    deploy:
+      mode: replicated
+      replicas: 1
+    volumes: 
+        - db_data:/var/lib/postgresql/data/
+
+
+  web:
+    image: 758024524140.dkr.ecr.us-east-1.amazonaws.com/prayer247-api:latest    
+    command: --cron
+    env_file:
+      .env
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        parallelism: 2
+        failure_action: rollback
+        order: start-first
+        max_failure_ratio: 0
+      rollback_config:
+        parallelism: 0
+        failure_action: pause
+        order: start-first
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/healthcheck"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 10s  
